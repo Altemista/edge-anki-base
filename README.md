@@ -1,26 +1,49 @@
-# Digital Twin for Anki Overdrive
-This is a digital twin of the Anki Overdrive which shows the current status of the cars. 
-The twin works both ways, which means that the cars can also be controlled from this twin,
-e.g. spped and lane offset.
+# Base Library for Anki Overdrive
+This includes the generic code with which the Anki Use Cases can communicate
+with the Anki Controller through Kafka.
 
-## Building and running it locally
-To build and start locally, run:
+The generic can be used as follows:
+
+First import the base package (consider using `glide` for vendoring).
 ```
-go run *.go
+import (
+	...
+	"github.com/okoeth/edge-anki-base/anki"
+	...
+)
 ```
 
-## Building and publishing the docker image
-To build and publish the Docker image run:
+Set-up the variables for Kafka producer and consumer. `TheStatus` is the array which holds the status
+for the three cars.
 ```
-./build.sh
+// TheStatus carries the latest status information
+var TheStatus = [3]anki.Status{}
+
+// TheProducer provides a reference to the Kafka producer
+var TheProducer sarama.AsyncProducer
+
+// TheConsumer provides a reference to the Kafka producer
+var TheConsumer *consumergroup.ConsumerGroup
 ```
-Note: This assumes that you are logged into the docker registry. Currently only the public Docker Hub is used. So makesure you are logged in via `docker login`.
 
-## Running it in Docker Compose
-See...
-TODO: Add ref to `edge-docker` project
+Then in your main function initialise the variables:
+``` 
+// Set-up Kafka
+kafkaServer := os.Getenv("KAFKA_SERVER")
+if kafkaServer == "" {
+	mlog.Printf("INFO: Using 127.0.0.1 as default KAFKA_SERVER.")
+	kafkaServer = "127.0.0.1"
+}
+p, err := anki.CreateKafkaProducer(kafkaServer + ":9092")
+if err != nil {
+	mlog.Fatalf("ERROR: Cannot create Kafka producer: %s", err)
+}
+TheProducer = p
+c, err := anki.CreateKafkaConsumer(kafkaServer+":2181", TheStatus)
+if err != nil {
+	mlog.Fatalf("ERROR: Cannot create Kafka consumer: %s", err)
+}
+TheConsumer = c
+```
 
-## References
-[Introduction of Sarama](https://medium.com/@Oskarr3/implementing-cqrs-using-kafka-and-sarama-library-in-golang-da7efa3b77fe)
-[Explanation of code below](https://engineering.randrr.com/getting-started-with-kafka-using-go-5a89f8555009)
-[Exmaple Code on GitHub](https://github.com/randrr/kafka-example)
+
