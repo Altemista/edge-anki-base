@@ -29,10 +29,8 @@ import (
 	"github.com/wvanbergen/kafka/consumergroup"
 )
 
-const consumerGroup = "mwc.twin"
-
 // CreateKafkaConsumer creates a Kafka consumer which is conected to the respective Kafka server
-func CreateKafkaConsumer(zookeeperConn string, theStatus [3]Status) (*consumergroup.ConsumerGroup, error) {
+func CreateKafkaConsumer(zookeeperConn string, consumerGroup string, theStatus [3]Status) (*consumergroup.ConsumerGroup, error) {
 	plog.Println("Starting Consumer")
 	config := consumergroup.NewConfig()
 	config.Offsets.Initial = sarama.OffsetOldest
