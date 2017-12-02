@@ -19,6 +19,10 @@
 
 package anki
 
+import (
+	"time"
+)
+
 type (
 	// Status represents a status update message from the Anki Overdrive controller
 	// Valid examples are:
@@ -26,16 +30,18 @@ type (
 	//  { "status_id" : "25", "status_name" : "Version", "version" : 42 }
 	//  { ... }
 	Status struct {
-		StatusID      string  `json:"status_id"`
-		StatusName    string  `json:"status_name"`
-		CarNo         string  `json:"car_no"`
-		CarID         string  `json:"car_id"`
-		Version       int     `json:"version"`
-		Level         int     `json:"level"`
-		Offset        float32 `json:"offset"`
-		Speed         int     `json:"speed"`
-		PieceID       int     `json:"piece_id"`
-		PieceLocation int     `json:"piece_location"`
+		StatusID          string    `json:"status_id"`
+		StatusName        string    `json:"status_name"`
+		CarNo             string    `json:"car_no"`
+		CarID             string    `json:"car_id"`
+		Version           int       `json:"version"`
+		Level             int       `json:"level"`
+		Offset            float32   `json:"offset"`
+		Speed             int       `json:"speed"`
+		PieceID           int       `json:"real_piece_id"`
+		PieceNo           int       `json:"piece_id"`
+		PieceLocation     int       `json:"piece_location"`
+		PositionTimestamp time.Time `json:"position_timestamp"`
 	}
 )
 
