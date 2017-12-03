@@ -46,7 +46,7 @@ type (
 )
 
 // MergeStatusUpdate updates fields as per message type
-func (s *Status) MergeStatusUpdate(u *Status) {
+func (s *Status) MergeStatusUpdate(u Status) {
 	if u.StatusID == "23" {
 		// No update, just a ping
 	} else if u.StatusID == "25" {

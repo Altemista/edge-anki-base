@@ -30,6 +30,31 @@ import (
 // Variable plog is the logger for the package
 var plog = log.New(os.Stdout, "EDGE-ANKI-BASE: ", log.Lshortfile|log.LstdFlags)
 
+// CreateTrack sets-up the
+func CreateTrack() []Status {
+	track := [4]Status{}
+	for i := 0; i < 4; i++ {
+		track[i].CarNo = string(i + 1)
+	}
+	return track[:]
+}
+
+// UpdateTrack merges a new status update in the track
+func UpdateTrack(track []Status, update Status) {
+	plog.Printf("INFO: Received status update")
+	if update.CarNo == "1" {
+		track[0].MergeStatusUpdate(update)
+	} else if update.CarNo == "2" {
+		track[1].MergeStatusUpdate(update)
+	} else if update.CarNo == "3" {
+		track[2].MergeStatusUpdate(update)
+	} else if update.CarNo == "4" {
+		track[3].MergeStatusUpdate(update)
+	} else {
+		plog.Printf("WARNING: Ignoring message from unknown carNo: %s", update.CarNo)
+	}
+}
+
 // CreateChannels Set-up of Communication (hiding all Kafka details behind Go Channels)
 func CreateChannels(uc string) (chan Command, chan Status, error) {
 	// Set-up Kafka
