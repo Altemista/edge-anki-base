@@ -1,6 +1,7 @@
 # Base Library for Anki Overdrive
 This includes the generic code with which the Anki Use Cases can communicate
-with the Anki Controller through Kafka.
+with the Anki Controller through Kafka. For the application there are no
+depedencies on Kafka as all communication is through Go channels.
 
 The generic can be used as follows:
 
@@ -8,42 +9,21 @@ First import the base package (consider using `glide` for vendoring).
 ```
 import (
 	...
-	"github.com/okoeth/edge-anki-base/anki"
+	anki "github.com/okoeth/edge-anki-base"
 	...
 )
 ```
 
-Set-up the variables for Kafka producer and consumer. `TheStatus` is the array which holds the status
-for the three cars.
+Set-up the variables for track and statrus and command channels:
 ```
-// TheStatus carries the latest status information
-var TheStatus = [3]anki.Status{}
-
-// TheProducer provides a reference to the Kafka producer
-var TheProducer sarama.AsyncProducer
-
-// TheConsumer provides a reference to the Kafka producer
-var TheConsumer *consumergroup.ConsumerGroup
-```
-
-Then in your main function initialise the variables:
-``` 
-// Set-up Kafka
-kafkaServer := os.Getenv("KAFKA_SERVER")
-if kafkaServer == "" {
-	mlog.Printf("INFO: Using 127.0.0.1 as default KAFKA_SERVER.")
-	kafkaServer = "127.0.0.1"
-}
-p, err := anki.CreateKafkaProducer(kafkaServer + ":9092")
+// Set-up channels for status and commands
+cmdCh, statusCh, err := anki.CreateChannels("edge.overtake")
 if err != nil {
-	mlog.Fatalf("ERROR: Cannot create Kafka producer: %s", err)
+	mlog.Fatalln("FATAL: Could not establish channels: %s", err)
 }
-TheProducer = p
-c, err := anki.CreateKafkaConsumer(kafkaServer+":2181", TheStatus)
-if err != nil {
-	mlog.Fatalf("ERROR: Cannot create Kafka consumer: %s", err)
-}
-TheConsumer = c
-```
+track := anki.CreateTrack()
 
+// Go and watch the track
+go watchTrack(track, cmdCh, statusCh)
+```
 
