@@ -41,7 +41,7 @@ func CreateTrack() []Status {
 
 // UpdateTrack merges a new status update in the track
 func UpdateTrack(track []Status, update Status) {
-	plog.Printf("INFO: Received status update")
+	plog.Printf("INFO: Updating track from status update")
 	if update.CarNo == "1" {
 		track[0].MergeStatusUpdate(update)
 	} else if update.CarNo == "2" {
@@ -53,6 +53,7 @@ func UpdateTrack(track []Status, update Status) {
 	} else {
 		plog.Printf("WARNING: Ignoring message from unknown carNo: %s", update.CarNo)
 	}
+	track[0].PieceNo = 43
 }
 
 // CreateChannels Set-up of Communication (hiding all Kafka details behind Go Channels)
