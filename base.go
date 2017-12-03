@@ -53,7 +53,6 @@ func UpdateTrack(track []Status, update Status) {
 	} else {
 		plog.Printf("WARNING: Ignoring message from unknown carNo: %s", update.CarNo)
 	}
-	track[0].PieceNo = 43
 }
 
 // CreateChannels Set-up of Communication (hiding all Kafka details behind Go Channels)

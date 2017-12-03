@@ -83,12 +83,12 @@ func CreateKafkaConsumer(zookeeperConn string, consumerGroup string, statusCh ch
 
 func handler(m *sarama.ConsumerMessage, statusCh chan Status) error {
 	plog.Printf("INFO: Received message: %s", m.Value)
-	statusUpdate := &Status{}
-	err := json.Unmarshal(m.Value, statusUpdate)
+	update := Status{}
+	err := json.Unmarshal(m.Value, &update)
 	if err != nil {
 		plog.Printf("WARNING: Could not unmarshal message, ignoring: %s", m.Value)
 		return nil
 	}
-
+	statusCh <- update
 	return nil
 }
