@@ -30,7 +30,7 @@ import (
 )
 
 // CreateKafkaConsumer creates a Kafka consumer which is conected to the respective Kafka server
-func CreateKafkaConsumer(zookeeperConn string, consumerGroup string, theStatus [3]Status) (*consumergroup.ConsumerGroup, error) {
+func CreateKafkaConsumer(zookeeperConn string, consumerGroup string, statusCh chan Status) (*consumergroup.ConsumerGroup, error) {
 	plog.Println("Starting Consumer")
 	config := consumergroup.NewConfig()
 	config.Offsets.Initial = sarama.OffsetOldest
@@ -68,7 +68,7 @@ func CreateKafkaConsumer(zookeeperConn string, consumerGroup string, theStatus [
 		for message := range consumer.Messages() {
 			plog.Printf("INFO: Topic: %s\t Partition: %v\t Offset: %v\n", message.Topic, message.Partition, message.Offset)
 
-			e := handler(message, theStatus)
+			e := handler(message, statusCh)
 			if e != nil {
 				plog.Fatal(e)
 				consumer.Close()
@@ -81,7 +81,7 @@ func CreateKafkaConsumer(zookeeperConn string, consumerGroup string, theStatus [
 	return consumer, nil
 }
 
-func handler(m *sarama.ConsumerMessage, theStatus [3]Status) error {
+func handler(m *sarama.ConsumerMessage, statusCh chan Status) error {
 	plog.Printf("INFO: Received message: %s", m.Value)
 	statusUpdate := &Status{}
 	err := json.Unmarshal(m.Value, statusUpdate)
@@ -90,14 +90,5 @@ func handler(m *sarama.ConsumerMessage, theStatus [3]Status) error {
 		return nil
 	}
 
-	if statusUpdate.CarNo == "1" {
-		theStatus[0].MergeStatusUpdate(statusUpdate)
-	} else if statusUpdate.CarNo == "2" {
-		theStatus[1].MergeStatusUpdate(statusUpdate)
-	} else if statusUpdate.CarNo == "3" {
-		theStatus[2].MergeStatusUpdate(statusUpdate)
-	} else {
-		plog.Printf("WARNING: Ignoring message from unknown carNo: %s", statusUpdate.CarNo)
-	}
 	return nil
 }
