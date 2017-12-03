@@ -20,7 +20,6 @@
 package anki
 
 import (
-	"edge-anki-base/anki"
 	"log"
 	"os"
 	"time"
@@ -32,38 +31,38 @@ import (
 var plog = log.New(os.Stdout, "EDGE-ANKI-BASE: ", log.Lshortfile|log.LstdFlags)
 
 // CreateChannels Set-up of Communication (hiding all Kafka details behind Go Channels)
-func CreateChannels(uc string) (chan anki.Command, chan anki.Status, error) {
+func CreateChannels(uc string) (chan Command, chan Status, error) {
 	// Set-up Kafka
 	kafkaServer := os.Getenv("KAFKA_SERVER")
 	if kafkaServer == "" {
-		mlog.Printf("INFO: Using 127.0.0.1 as default KAFKA_SERVER.")
+		plog.Printf("INFO: Using 127.0.0.1 as default KAFKA_SERVER.")
 		kafkaServer = "127.0.0.1"
 	}
 	// Producer
-	p, err := anki.CreateKafkaProducer(kafkaServer + ":9092")
+	p, err := CreateKafkaProducer(kafkaServer + ":9092")
 	if err != nil {
 		return nil, nil, err
 	}
-	cmdCh := make(chan anki.Command)
+	cmdCh := make(chan Command)
 	go sendCommand(p, cmdCh)
 	// Consumer
-	statusCh := make(chan anki.Status)
-	c, err := anki.CreateKafkaConsumer(kafkaServer+":2181", uc, statusCh)
+	statusCh := make(chan Status)
+	_, err = CreateKafkaConsumer(kafkaServer+":2181", uc, statusCh)
 	if err != nil {
 		return nil, nil, err
 	}
 	return cmdCh, statusCh, nil
 }
 
-func sendCommand(p sarama.AsyncProducer, ch chan anki.Command) {
-	var cmd anki.Command
+func sendCommand(p sarama.AsyncProducer, ch chan Command) {
+	var cmd Command
 	for {
-		mlog.Printf("INFO: Waiting for command at %v", time.Now())
+		plog.Printf("INFO: Waiting for command at %v", time.Now())
 		cmd = <-ch
-		mlog.Printf("INFO: Received command")
+		plog.Printf("INFO: Received command")
 		cmdstr, err := cmd.ControllerString()
 		if err != nil {
-			mlog.Println("WARNING: Ignoring command due to decoding error")
+			plog.Println("WARNING: Ignoring command due to decoding error")
 			continue
 		}
 		p.Input() <- &sarama.ProducerMessage{
