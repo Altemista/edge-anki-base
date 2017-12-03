@@ -39,7 +39,7 @@ type (
 		Offset            float32   `json:"offset"`
 		Speed             int       `json:"speed"`
 		PieceID           int       `json:"real_piece_id"`
-		PieceNo           int       `json:"piece_id"`
+		PieceNo           int       `json:"piece_id_XXX"`
 		PieceLocation     int       `json:"piece_location"`
 		PositionTimestamp time.Time `json:"position_timestamp"`
 	}
