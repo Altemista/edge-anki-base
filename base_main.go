@@ -31,6 +31,11 @@ import (
 var plog = log.New(os.Stdout, "EDGE-ANKI-BASE: ", log.Lshortfile|log.LstdFlags)
 
 // CreateTrack sets-up the
+func SetLogger(l *log.Logger) {
+	plog = l
+}
+
+// CreateTrack sets-up the
 func CreateTrack() []Status {
 	track := [4]Status{}
 	for i := 0; i < 4; i++ {
