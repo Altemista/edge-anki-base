@@ -97,7 +97,7 @@ func sendCommand(p sarama.AsyncProducer, ch chan Command) {
 		}
 		p.Input() <- &sarama.ProducerMessage{
 			Value:     sarama.StringEncoder(cmdstr),
-			Topic:     "Command" + cmd.CarNo,
+			Topic:     "Command" + string(cmd.CarNo),
 			Partition: 0,
 			Timestamp: time.Now(),
 		}

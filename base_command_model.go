@@ -19,13 +19,16 @@
 
 package anki
 
-import "errors"
+import (
+	"errors"
+	"strconv"
+)
 
 type (
 	// Command represents a valid command with can be sent to the Anki Overdrive controller
 	Command struct {
 		Command string  `json:"command"`
-		CarNo   string  `json:"carNo"`
+		CarNo   int     `json:"carNo"`
 		Param1  string  `json:"param1"`
 		Param2  string  `json:"param2"`
 		Param3  int     `json:"param3"`
@@ -34,6 +37,30 @@ type (
 		Source  string  `json:"source"`
 	}
 )
+
+// CalculateLaneNo converts the command struct in a string that
+// can be processed by the Anki Overdrive controller
+func (c *Command) CalculateLaneNo(currentLane int) {
+	if c.Param2 == "right" {
+		if currentLane > 1 {
+			c.Param1 = strconv.Itoa(currentLane - 1)
+			plog.Printf("INFO: Change right to %s", c.Param1)
+		} else {
+			c.Param1 = strconv.Itoa(currentLane)
+			plog.Print("INFO: Already on right most lane")
+		}
+	} else if c.Param2 == "left" {
+		if currentLane < 4 {
+			c.Param1 = strconv.Itoa(currentLane + 1)
+			plog.Printf("INFO: Change left to %s", c.Param1)
+		} else {
+			c.Param1 = strconv.Itoa(currentLane)
+			plog.Print("INFO: Already on left most lane")
+		}
+	} else {
+		plog.Printf("WARNING: Unknown direction for lane change: %s", c.Param2)
+	}
+}
 
 // ControllerString converts the command struct in a string that
 // can be processed by the Anki Overdrive controller
