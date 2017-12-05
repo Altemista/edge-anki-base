@@ -22,6 +22,7 @@ package anki
 import (
 	"log"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/Shopify/sarama"
@@ -97,7 +98,7 @@ func sendCommand(p sarama.AsyncProducer, ch chan Command) {
 		}
 		p.Input() <- &sarama.ProducerMessage{
 			Value:     sarama.StringEncoder(cmdstr),
-			Topic:     "Command" + string(cmd.CarNo),
+			Topic:     "Command" + strconv.Itoa(cmd.CarNo),
 			Partition: 0,
 			Timestamp: time.Now(),
 		}

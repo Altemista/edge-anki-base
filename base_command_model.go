@@ -41,6 +41,10 @@ type (
 // CalculateLaneNo converts the command struct in a string that
 // can be processed by the Anki Overdrive controller
 func (c *Command) CalculateLaneNo(currentLane int) {
+	if currentLane == 0 {
+		plog.Printf("WARNING: Ignoring lane change due to lack of current lane")
+		return
+	}
 	if c.Param2 == "right" {
 		if currentLane > 1 {
 			c.Param1 = strconv.Itoa(currentLane - 1)
