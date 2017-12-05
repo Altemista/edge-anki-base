@@ -19,58 +19,63 @@
 
 package anki
 
-import (
-	"time"
-)
+import "time"
 
 type (
 	// Status represents a status update message from the Anki Overdrive controller
-	// Valid examples are:
-	//  { "status_id" : "23", "status_name" : "Ping" }
-	//  { "status_id" : "25", "status_name" : "Version", "version" : 42 }
-	//  { ... }
 	Status struct {
-		StatusID          string    `json:"status_id"`
-		StatusName        string    `json:"status_name"`
-		CarNo             string    `json:"car_no"`
-		CarID             string    `json:"car_id"`
-		Version           int       `json:"version"`
-		Level             int       `json:"level"`
-		Offset            float32   `json:"offset"`
-		Speed             int       `json:"speed"`
-		PieceID           int       `json:"real_piece_id"`
-		PieceNo           int       `json:"piece_id_XXX"`
-		PieceLocation     int       `json:"piece_location"`
-		PositionTimestamp time.Time `json:"position_timestamp"`
+		MsgID           int         `json:"msgID"`
+		MsgName         string      `json:"msgName"`
+		MsgTimestamp    time.Time   `json:"msgTimestamp"`
+		CarNo           int         `json:"carNo"`
+		CarID           string      `json:"carID"`
+		CarSpeed        int         `json:"carSpeed"`
+		CarVersion      int         `json:"carVersion"`
+		CarBatteryLevel int         `json:"carBatteryLevel"`
+		LaneOffset      float32     `json:"laneOffset"`
+		LaneNo          int         `json:"laneNo"`
+		PosTileType     int         `json:"posTileType"`
+		PosTileNo       int         `json:"posTileNo"`
+		PosLocation     int         `json:"posLocation"`
+		PosOptions      []PosOption `json:"posOptions"`
+	}
+	// PosOption lists an option for a position
+	PosOption struct {
+		OptTileNo      int `json:"optTileNo"`
+		OptProbability int `json:"optProbability"`
 	}
 )
 
 // MergeStatusUpdate updates fields as per message type
 func (s *Status) MergeStatusUpdate(u Status) {
-	if u.StatusID == "23" {
+	if u.MsgID == 23 {
 		// No update, just a ping
-	} else if u.StatusID == "25" {
+	} else if u.MsgID == 25 {
 		// Version update
-		s.Version = u.Version
-	} else if u.StatusID == "27" {
+		s.CarVersion = u.CarVersion
+	} else if u.MsgID == 27 {
 		// Battery update
-		s.Level = u.Level
-	} else if u.StatusID == "39" {
+		s.CarBatteryLevel = u.CarBatteryLevel
+	} else if u.MsgID == 39 {
 		// Position update
-		s.PieceID = u.PieceID
-		s.PieceLocation = u.PieceLocation
-		s.Speed = u.Speed
-		s.Offset = u.Offset
-	} else if u.StatusID == "41" {
+		s.CarSpeed = u.CarSpeed
+		s.LaneOffset = u.LaneOffset
+		s.LaneNo = u.LaneNo
+		s.PosTileType = u.PosTileType
+		s.PosTileNo = u.PosTileNo
+		s.PosLocation = u.PosLocation
+		s.PosOptions = u.PosOptions
+		s.MsgTimestamp = u.MsgTimestamp
+	} else if u.MsgID == 41 {
 		// Transition update
-		s.Offset = u.Offset
-	} else if u.StatusID == "43" {
+		s.LaneOffset = u.LaneOffset
+	} else if u.MsgID == 43 {
 		// Delocalisation, not sure what to do
-	} else if u.StatusID == "45" {
+	} else if u.MsgID == 45 {
 		// Offset update
-		s.Offset = u.Offset
-	} else if u.StatusID == "65" {
+		s.LaneOffset = u.LaneOffset
+	} else if u.MsgID == 65 {
 		// Offset update (undocumented?)
-		s.Offset = u.Offset
+		s.LaneOffset = u.LaneOffset
 	}
 }
