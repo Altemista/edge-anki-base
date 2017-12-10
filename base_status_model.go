@@ -34,9 +34,12 @@ type (
 		CarBatteryLevel int         `json:"carBatteryLevel"`
 		LaneOffset      float32     `json:"laneOffset"`
 		LaneNo          int         `json:"laneNo"`
+		LaneLength      int         `json:"laneLength"`
+		LaneTimestamp   time.Time   `json:"laneTimestamp"`
 		PosTileType     int         `json:"posTileType"`
 		PosTileNo       int         `json:"posTileNo"`
 		PosLocation     int         `json:"posLocation"`
+		PosTimestamp    time.Time   `json:"posTimestamp"`
 		PosOptions      []PosOption `json:"posOptions"`
 	}
 	// PosOption lists an option for a position
@@ -65,10 +68,20 @@ func (s *Status) MergeStatusUpdate(u Status) {
 		s.PosTileNo = u.PosTileNo
 		s.PosLocation = u.PosLocation
 		s.PosOptions = u.PosOptions
+		s.PosTimestamp = u.MsgTimestamp
 		s.MsgTimestamp = u.MsgTimestamp
 	} else if u.MsgID == 41 {
 		// Transition update
 		s.LaneOffset = u.LaneOffset
+		s.LaneNo = u.LaneNo
+		/*
+			s.PosTileType = u.PosTileType
+			s.PosTileNo = u.PosTileNo
+			s.PosLocation = u.PosLocation
+			s.PosOptions = u.PosOptions
+		*/
+		s.LaneTimestamp = u.MsgTimestamp
+		s.MsgTimestamp = u.MsgTimestamp
 	} else if u.MsgID == 43 {
 		// Delocalisation, not sure what to do
 	} else if u.MsgID == 45 {

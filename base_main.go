@@ -38,10 +38,11 @@ func SetLogger(l *log.Logger) {
 
 // CreateTrack sets-up the
 func CreateTrack() []Status {
-	track := [4]Status{}
+	track := [5]Status{}
 	for i := 0; i < 4; i++ {
 		track[i].CarNo = i + 1
 	}
+	track[4].CarNo = -1
 	return track[:]
 }
 
