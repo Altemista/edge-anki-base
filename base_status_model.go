@@ -56,30 +56,33 @@ func (s *Status) MergeStatusUpdate(u Status) {
 	} else if u.MsgID == 25 {
 		// Version update
 		s.CarVersion = u.CarVersion
+		s.MsgTimestamp = u.MsgTimestamp
 	} else if u.MsgID == 27 {
 		// Battery update
 		s.CarBatteryLevel = u.CarBatteryLevel
+		s.MsgTimestamp = u.MsgTimestamp
 	} else if u.MsgID == 39 {
 		// Position update
 		s.CarSpeed = u.CarSpeed
 		s.LaneOffset = u.LaneOffset
 		s.LaneNo = u.LaneNo
 		s.PosTileType = u.PosTileType
-		s.PosTileNo = u.PosTileNo
 		s.PosLocation = u.PosLocation
 		s.PosOptions = u.PosOptions
 		s.PosTimestamp = u.MsgTimestamp
 		s.MsgTimestamp = u.MsgTimestamp
+		s.findTileNo(u)
 	} else if u.MsgID == 41 {
 		// Transition update
 		s.LaneOffset = u.LaneOffset
 		s.LaneNo = u.LaneNo
 		/*
-			s.PosTileType = u.PosTileType
-			s.PosTileNo = u.PosTileNo
-			s.PosLocation = u.PosLocation
-			s.PosOptions = u.PosOptions
-			s.PosTimestamp = u.MsgTimestamp
+				s.PosTileType = u.PosTileType
+				s.PosTileNo = u.PosTileNo
+				s.PosLocation = u.PosLocation
+				s.PosOptions = u.PosOptions
+				s.PosTimestamp = u.MsgTimestamp
+			s.findTileNo(u)
 		*/
 		s.LaneTimestamp = u.MsgTimestamp
 		s.MsgTimestamp = u.MsgTimestamp
@@ -88,8 +91,23 @@ func (s *Status) MergeStatusUpdate(u Status) {
 	} else if u.MsgID == 45 {
 		// Offset update
 		s.LaneOffset = u.LaneOffset
+		s.MsgTimestamp = u.MsgTimestamp
 	} else if u.MsgID == 65 {
 		// Offset update (undocumented?)
 		s.LaneOffset = u.LaneOffset
+		s.MsgTimestamp = u.MsgTimestamp
 	}
+}
+
+// MergeStatusUpdate updates fields as per message type
+func (s *Status) findTileNo(u Status) {
+	bestTileNo := -1
+	bestProbability := 0
+	for _, option := range u.PosOptions {
+		if option.OptProbability > bestProbability {
+			bestTileNo = option.OptTileNo
+			bestProbability = option.OptProbability
+		}
+	}
+	s.PosTileNo = bestTileNo
 }

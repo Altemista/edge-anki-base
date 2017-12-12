@@ -22,7 +22,7 @@ package anki
 import "testing"
 import "encoding/json"
 
-var tms = [][]byte{[]byte(`{ 
+var dataMarshaling = [][]byte{[]byte(`{ 
 		"msgID":39,
 		"msgName":"POSITION_UPDATE",
 		"msgTimestamp":"2017-12-02T21:04:20.071Z",
@@ -79,11 +79,57 @@ var tss = []Status{
 	},
 }
 
+var dataTileNo = []Status{
+	Status{
+		MsgID: 39,
+		PosOptions: []PosOption{
+			{
+				OptTileNo:      1,
+				OptProbability: 90,
+			},
+			{
+				OptTileNo:      4,
+				OptProbability: 10,
+			},
+		},
+	},
+	Status{
+		MsgID: 39,
+		PosOptions: []PosOption{
+			{
+				OptTileNo:      1,
+				OptProbability: 10,
+			},
+			{
+				OptTileNo:      4,
+				OptProbability: 90,
+			},
+		},
+	},
+	Status{
+		MsgID: 39,
+		PosOptions: []PosOption{
+			{
+				OptTileNo:      1,
+				OptProbability: 100,
+			},
+		},
+	},
+	Status{
+		MsgID:      39,
+		PosOptions: []PosOption{},
+	},
+}
+
+var resultTileNo = []int{
+	1, 4, 1, -1,
+}
+
 func TestMarshaling(t *testing.T) {
 	t.Log("Testing marshaling")
-	for i := range tms {
+	for i := range dataMarshaling {
 		s := Status{}
-		err := json.Unmarshal(tms[i], &s)
+		err := json.Unmarshal(dataMarshaling[i], &s)
 		if err != nil {
 			t.Errorf("Error unmarishalling: %v", err)
 			t.Fail()
@@ -97,5 +143,17 @@ func TestMarshaling(t *testing.T) {
 			t.Fail()
 		}
 		//TODO: More field tests to add
+	}
+}
+
+func TestTileNo(t *testing.T) {
+	t.Log("Testing tile-no")
+	currentStatus := Status{}
+	for i := range dataTileNo {
+		currentStatus.findTileNo(dataTileNo[i])
+		if currentStatus.PosTileNo != resultTileNo[i] {
+			t.Errorf("Wrong tileNo, expcted: %d / found: %d", resultTileNo[i], currentStatus.PosTileNo)
+			t.Fail()
+		}
 	}
 }
