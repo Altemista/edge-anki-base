@@ -79,6 +79,7 @@ func (s *Status) MergeStatusUpdate(u Status) {
 			s.PosTileNo = u.PosTileNo
 			s.PosLocation = u.PosLocation
 			s.PosOptions = u.PosOptions
+			s.PosTimestamp = u.MsgTimestamp
 		*/
 		s.LaneTimestamp = u.MsgTimestamp
 		s.MsgTimestamp = u.MsgTimestamp

@@ -40,7 +40,7 @@ func SetLogger(l *log.Logger) {
 func CreateTrack() []Status {
 	track := [5]Status{}
 	for i := 0; i < 4; i++ {
-		track[i].CarNo = i + 1
+		track[i].CarNo = i
 	}
 	track[4].CarNo = -1
 	return track[:]
@@ -49,13 +49,13 @@ func CreateTrack() []Status {
 // UpdateTrack merges a new status update in the track
 func UpdateTrack(track []Status, update Status) {
 	plog.Printf("INFO: Updating track from status update")
-	if update.CarNo == 1 {
+	if update.CarNo == 0 {
 		track[0].MergeStatusUpdate(update)
-	} else if update.CarNo == 2 {
+	} else if update.CarNo == 1 {
 		track[1].MergeStatusUpdate(update)
-	} else if update.CarNo == 3 {
+	} else if update.CarNo == 2 {
 		track[2].MergeStatusUpdate(update)
-	} else if update.CarNo == 4 {
+	} else if update.CarNo == 3 {
 		track[3].MergeStatusUpdate(update)
 	} else {
 		plog.Printf("WARNING: Ignoring message from unknown carNo: %d", update.CarNo)
