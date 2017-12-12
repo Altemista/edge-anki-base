@@ -36,7 +36,7 @@ type (
 		LaneNo          int         `json:"laneNo"`
 		LaneLength      int         `json:"laneLength"`
 		LaneTimestamp   time.Time   `json:"laneTimestamp"`
-		PosTileType     int         `json:"posTileType"`
+		PosTileType     string      `json:"posTileType"`
 		PosTileNo       int         `json:"posTileNo"`
 		PosLocation     int         `json:"posLocation"`
 		PosTimestamp    time.Time   `json:"posTimestamp"`
