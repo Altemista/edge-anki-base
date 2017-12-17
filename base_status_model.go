@@ -41,7 +41,7 @@ type (
 		PosLocation     int         `json:"posLocation"`
 		PosTimestamp    time.Time   `json:"posTimestamp"`
 		PosOptions      []PosOption `json:"posOptions"`
-		PosOptions      int 		`json:"maxTileNo"`
+		MaxTileNot      int 		`json:"maxTileNo"`
 	}
 	// PosOption lists an option for a position
 	PosOption struct {
