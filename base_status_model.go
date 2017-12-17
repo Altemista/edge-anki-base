@@ -41,7 +41,7 @@ type (
 		PosLocation     int         `json:"posLocation"`
 		PosTimestamp    time.Time   `json:"posTimestamp"`
 		PosOptions      []PosOption `json:"posOptions"`
-		MaxTileNot      int 		`json:"maxTileNo"`
+		MaxTileNo	    int 		`json:"maxTileNo"`
 	}
 	// PosOption lists an option for a position
 	PosOption struct {
@@ -72,6 +72,7 @@ func (s *Status) MergeStatusUpdate(u Status) {
 		s.PosOptions = u.PosOptions
 		s.PosTimestamp = u.MsgTimestamp
 		s.MsgTimestamp = u.MsgTimestamp
+		s.MaxTileNo = u.MaxTileNo
 		s.findTileNo(u)
 	} else if u.MsgID == 41 {
 		// Transition update
