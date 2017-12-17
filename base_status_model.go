@@ -42,6 +42,7 @@ type (
 		PosTimestamp    time.Time   `json:"posTimestamp"`
 		PosOptions      []PosOption `json:"posOptions"`
 		MaxTileNo	    int 		`json:"maxTileNo"`
+		TransitionTimestamp time.Time
 	}
 	// PosOption lists an option for a position
 	PosOption struct {
@@ -88,6 +89,8 @@ func (s *Status) MergeStatusUpdate(u Status) {
 		*/
 		s.LaneTimestamp = u.MsgTimestamp
 		s.MsgTimestamp = u.MsgTimestamp
+		s.TransitionTimestamp = u.MsgTimestamp
+		s.MaxTileNo = u.MaxTileNo
 	} else if u.MsgID == 43 {
 		// Delocalisation, not sure what to do
 	} else if u.MsgID == 45 {
