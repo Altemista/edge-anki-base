@@ -68,6 +68,7 @@ func (s *Status) MergeStatusUpdate(u Status) {
 		s.CarSpeed = u.CarSpeed
 		s.LaneOffset = u.LaneOffset
 		s.LaneNo = u.LaneNo
+		s.LaneLength = u.LaneLength
 		s.PosTileType = u.PosTileType
 		s.PosLocation = u.PosLocation
 		s.PosOptions = u.PosOptions
@@ -79,6 +80,7 @@ func (s *Status) MergeStatusUpdate(u Status) {
 		// Transition update
 		s.LaneOffset = u.LaneOffset
 		s.LaneNo = u.LaneNo
+		s.LaneLength = u.LaneLength
 		/*
 				s.PosTileType = u.PosTileType
 				s.PosTileNo = u.PosTileNo
