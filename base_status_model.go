@@ -51,7 +51,7 @@ type (
 	}
 )
 
-// MergeStatusUpdate updates fields as per message type
+// MergeStatusUpdate updates fields as per message type 2
 func (s *Status) MergeStatusUpdate(u Status) {
 	if u.MsgID == 23 {
 		// No update, just a ping
