@@ -38,11 +38,12 @@ func SetLogger(l *log.Logger) {
 
 // CreateTrack sets-up the
 func CreateTrack() []Status {
-	track := [5]Status{}
+	track := [6]Status{}
 	for i := 0; i < 4; i++ {
 		track[i].CarNo = i
 	}
 	track[4].CarNo = -1
+	track[5].CarNo = -2
 	return track[:]
 }
 
@@ -57,6 +58,10 @@ func UpdateTrack(track []Status, update Status) {
 		track[2].MergeStatusUpdate(update)
 	} else if update.CarNo == 3 {
 		track[3].MergeStatusUpdate(update)
+	} else if update.CarNo == -1 {
+		track[4].MergeStatusUpdate(update)
+	} else if update.CarNo == -2 {
+		track[5].MergeStatusUpdate(update)}
 	} else {
 		plog.Printf("WARNING: Ignoring message from unknown carNo: %d", update.CarNo)
 	}

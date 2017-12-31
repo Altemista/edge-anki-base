@@ -75,7 +75,6 @@ func (s *Status) MergeStatusUpdate(u Status) {
 		s.PosTimestamp = u.MsgTimestamp
 		s.MsgTimestamp = u.MsgTimestamp
 		s.MaxTileNo = u.MaxTileNo
-		s.findTileNo(u)
 	} else if u.MsgID == 41 {
 		// Transition update
 		/*s.LaneOffset = u.LaneOffset
