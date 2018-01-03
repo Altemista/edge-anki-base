@@ -61,7 +61,7 @@ func UpdateTrack(track []Status, update Status) {
 	} else if update.CarNo == -1 {
 		track[4].MergeStatusUpdate(update)
 	} else if update.CarNo == -2 {
-		track[5].MergeStatusUpdate(update)}
+		track[5].MergeStatusUpdate(update)
 	} else {
 		plog.Printf("WARNING: Ignoring message from unknown carNo: %d", update.CarNo)
 	}
