@@ -29,7 +29,7 @@ var dataMarshaling = [][]byte{[]byte(`{
 		"carNo":1,
 		"carID":"asdf",
 		"carSpeed":258,
-		"posTileType":17,
+		"posTileType":"17",
 		"posLocation":33,
 		"posTileNo":1,
 		"posOptions": [
@@ -52,7 +52,7 @@ var dataMarshaling = [][]byte{[]byte(`{
 		"carNo":1,
 		"carID":"asdf",
 		"carSpeed":258,
-		"posTileType":17,
+		"posTileType":"17",
 		"posLocation":33,
 		"posTileNo":1,
 		"laneNo":1,
@@ -140,6 +140,10 @@ func TestMarshaling(t *testing.T) {
 		}
 		if len(s.PosOptions) != len(tss[i].PosOptions) {
 			t.Errorf("Number of elements: %d", len(s.PosOptions))
+			t.Fail()
+		}
+		if s.Identify() == "" {
+			t.Errorf("Empty identifier: %s", s.Identify())
 			t.Fail()
 		}
 		//TODO: More field tests to add
