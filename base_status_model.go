@@ -52,7 +52,7 @@ type (
 )
 
 // Identify returns a semi.unique ID
-func (s *Status) Identify() string {
+func (s Status) Identify() string {
 	return string(s.MsgTimestamp.UnixNano())
 }
 
