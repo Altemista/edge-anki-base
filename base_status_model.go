@@ -19,7 +19,10 @@
 
 package anki
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type (
 	// Status represents a status update message from the Anki Overdrive controller
@@ -53,7 +56,7 @@ type (
 
 // Identify returns a semi.unique ID
 func (s Status) Identify() string {
-	return string(s.MsgTimestamp.UnixNano())
+	return fmt.Sprintf("%v", s.MsgTimestamp.UnixNano())
 }
 
 // MergeStatusUpdate updates fields as per message type 2
