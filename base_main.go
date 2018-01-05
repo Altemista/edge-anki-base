@@ -24,8 +24,8 @@ import (
 	"os"
 	"strconv"
 	"time"
-
-	"github.com/Shopify/sarama"
+	"net/http"
+	"bytes"
 )
 
 // Variable plog is the logger for the package
@@ -49,7 +49,7 @@ func CreateTrack() []Status {
 
 // UpdateTrack merges a new status update in the track
 func UpdateTrack(track []Status, update Status) {
-	plog.Printf("INFO: Updating track from status update")
+	plog.Printf("INFO: Updating track from status update with latency %f ms", time.Since(update.MsgTimestamp).Seconds()*1000)
 	if update.CarNo == 0 {
 		track[0].MergeStatusUpdate(update)
 	} else if update.CarNo == 1 {
@@ -76,38 +76,39 @@ func CreateChannels(uc string) (chan Command, chan Status, error) {
 		kafkaServer = "127.0.0.1"
 	}
 	// Producer
-	p, err := CreateKafkaProducer(kafkaServer + ":9092")
-	if err != nil {
-		return nil, nil, err
-	}
 	cmdCh := make(chan Command)
-	go sendCommand(p, cmdCh)
+	go sendCommand(cmdCh)
+
 	// Consumer
 	statusCh := make(chan Status)
-	_, err = CreateKafkaConsumer(kafkaServer+":2181", uc, statusCh)
+	err := CreateHttpConsumer(statusCh)
 	if err != nil {
 		return nil, nil, err
 	}
 	return cmdCh, statusCh, nil
 }
 
-func sendCommand(p sarama.AsyncProducer, ch chan Command) {
+func sendCommand(ch chan Command) {
 	var cmd Command
 	for {
 		plog.Printf("INFO: Waiting for command at %v", time.Now())
 		cmd = <-ch
 		plog.Printf("INFO: Received command")
 		cmdstr, err := cmd.ControllerString()
+		plog.Printf("INFO: Sending command %s to topic %s", cmdstr, "Command" + strconv.Itoa(cmd.CarNo))
 		if err != nil {
 			plog.Println("WARNING: Ignoring command due to decoding error")
 			continue
 		}
-		p.Input() <- &sarama.ProducerMessage{
-			Value:     sarama.StringEncoder(cmdstr),
-			Topic:     "Command" + strconv.Itoa(cmd.CarNo),
-			Partition: 0,
-			Timestamp: time.Now(),
-		}
 
+		requestUrl := "http://localhost:809" + strconv.Itoa(cmd.CarNo) + "/cmd"
+		var netClient = &http.Client{
+			Timeout: time.Second * 10,
+		}
+		response, err := netClient.Post(requestUrl, "text/plain", bytes.NewBuffer([]byte(cmdstr)))
+		if err != nil {
+			plog.Println("WARNING: Could not send command")
+		}
+		defer response.Body.Close()
 	}
 }
