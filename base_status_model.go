@@ -19,29 +19,32 @@
 
 package anki
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type (
 	// Status represents a status update message from the Anki Overdrive controller
 	Status struct {
-		MsgID           int         `json:"msgID"`
-		MsgName         string      `json:"msgName"`
-		MsgTimestamp    time.Time   `json:"msgTimestamp"`
-		CarNo           int         `json:"carNo"`
-		CarID           string      `json:"carID"`
-		CarSpeed        int         `json:"carSpeed"`
-		CarVersion      int         `json:"carVersion"`
-		CarBatteryLevel int         `json:"carBatteryLevel"`
-		LaneOffset      float32     `json:"laneOffset"`
-		LaneNo          int         `json:"laneNo"`
-		LaneLength      int         `json:"laneLength"`
-		LaneTimestamp   time.Time   `json:"laneTimestamp"`
-		PosTileType     string      `json:"posTileType"`
-		PosTileNo       int         `json:"posTileNo"`
-		PosLocation     int         `json:"posLocation"`
-		PosTimestamp    time.Time   `json:"posTimestamp"`
-		PosOptions      []PosOption `json:"posOptions"`
-		MaxTileNo	    int 		`json:"maxTileNo"`
+		MsgID               int         `json:"msgID"`
+		MsgName             string      `json:"msgName"`
+		MsgTimestamp        time.Time   `json:"msgTimestamp"`
+		CarNo               int         `json:"carNo"`
+		CarID               string      `json:"carID"`
+		CarSpeed            int         `json:"carSpeed"`
+		CarVersion          int         `json:"carVersion"`
+		CarBatteryLevel     int         `json:"carBatteryLevel"`
+		LaneOffset          float32     `json:"laneOffset"`
+		LaneNo              int         `json:"laneNo"`
+		LaneLength          int         `json:"laneLength"`
+		LaneTimestamp       time.Time   `json:"laneTimestamp"`
+		PosTileType         string      `json:"posTileType"`
+		PosTileNo           int         `json:"posTileNo"`
+		PosLocation         int         `json:"posLocation"`
+		PosTimestamp        time.Time   `json:"posTimestamp"`
+		PosOptions          []PosOption `json:"posOptions"`
+		MaxTileNo           int         `json:"maxTileNo"`
 		TransitionTimestamp time.Time
 	}
 	// PosOption lists an option for a position
@@ -50,6 +53,11 @@ type (
 		OptProbability int `json:"optProbability"`
 	}
 )
+
+// Identify returns a semi.unique ID
+func (s Status) Identify() string {
+	return fmt.Sprintf("%v", s.MsgTimestamp.UnixNano())
+}
 
 // MergeStatusUpdate updates fields as per message type 2
 func (s *Status) MergeStatusUpdate(u Status) {
