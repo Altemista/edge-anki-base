@@ -24,6 +24,9 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"github.com/gorilla/websocket"
+	"goji.io"
+	"goji.io/pat"
+	"time"
 )
 
 var upgrader = websocket.Upgrader{
@@ -32,16 +35,16 @@ var upgrader = websocket.Upgrader{
 }
 
 var m_statusCh chan Status
+var m_track* []Status
 
-func CreateHttpConsumer(statusCh chan Status) (error) {
+func CreateHttpConsumer(statusCh chan Status, mux* goji.Mux, track* []Status) (error) {
 	plog.Println("Starting http listener")
 
 	m_statusCh = statusCh
+	m_track = track
 
-	//http.HandleFunc("/status", http_status_handler)
-	//go http.ListenAndServe(":8089", nil)
-
-	http.HandleFunc("/status", websocket_handler)
+	//http.HandleFunc("/status", websocket_handler)
+	mux.HandleFunc(pat.Get("/status"), websocket_handler)
 
 	return nil
 }
@@ -76,13 +79,15 @@ func websocket_handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		start := time.Now()
 		plog.Println("INFO: Received message: " + string(msg))
 		update := Status{}
 		err = json.Unmarshal(msg, &update)
 		if err != nil {
 			plog.Printf("WARNING: Could not unmarshal message, ignoring: %s", msg)
 		}
-		m_statusCh <- update
+		plog.Printf("INFO: Unmarshalling message took %f ms", time.Since(start).Seconds()*1000)
+		UpdateTrack(*m_track, update)
 	}
 	plog.Println("Client unsubscribed")
 }

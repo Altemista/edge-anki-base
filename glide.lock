@@ -1,0 +1,48 @@
+hash: c80ad9c3eccdf14e6521fa5b8a8dda3550bb727ed4fa4c1b04bf77a8c0543b32
+updated: 2018-01-07T23:26:43.408007739+01:00
+imports:
+- name: github.com/davecgh/go-spew
+  version: ecdeabc65495df2dec95d7c4a4c3e021903035e5
+  subpackages:
+  - spew
+- name: github.com/eapache/go-resiliency
+  version: ef9aaa7ea8bd2448429af1a77cf41b2b3b34bdd6
+  subpackages:
+  - breaker
+- name: github.com/eapache/go-xerial-snappy
+  version: bb955e01b9346ac19dc29eb16586c90ded99a98c
+- name: github.com/eapache/queue
+  version: 44cc805cf13205b55f69e14bcb69867d1ae92f98
+- name: github.com/golang/snappy
+  version: 553a641470496b2327abcac10b36396bd98e45c9
+- name: github.com/gorilla/websocket
+  version: ea4d1f681babbce9545c9c5f3d5194a789c89f5b
+- name: github.com/pierrec/lz4
+  version: 2fcda4cb7018ce05a25959d2fe08c83e3329f169
+- name: github.com/pierrec/xxHash
+  version: a0006b13c722f7f12368c00a3d3c2ae8a999a0c6
+  subpackages:
+  - xxHash32
+- name: github.com/pquerna/ffjson
+  version: d49c2bc1aa135aad0c6f4fc2056623ec78f5d5ac
+- name: github.com/rcrowley/go-metrics
+  version: e181e095bae94582363434144c61a9653aff6e50
+- name: github.com/samuel/go-zookeeper
+  version: 471cd4e61d7a78ece1791fa5faa0345dc8c7d5a5
+  subpackages:
+  - zk
+- name: github.com/Shopify/sarama
+  version: 3b1b38866a79f06deddf0487d5c27ba0697ccd65
+- name: github.com/wvanbergen/kafka
+  version: e2edea948ddfee841ea9a263b32ccca15f7d6c2f
+  subpackages:
+  - consumergroup
+- name: github.com/wvanbergen/kazoo-go
+  version: 494a179ad10a1a52daa7536a82cc215bc728c399
+- name: goji.io
+  version: 0d89ff54b2c18c9c4ba530e32496aef902d3c6cd
+  subpackages:
+  - internal
+  - pat
+  - pattern
+testImports: []

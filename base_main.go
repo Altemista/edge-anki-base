@@ -26,7 +26,11 @@ import (
 	"time"
 	"net/http"
 	"bytes"
+	"goji.io"
+	"sync"
 )
+
+var lock sync.Mutex
 
 // Variable plog is the logger for the package
 var plog = log.New(os.Stdout, "EDGE-ANKI-BASE: ", log.Lshortfile|log.LstdFlags)
@@ -49,6 +53,13 @@ func CreateTrack() []Status {
 
 // UpdateTrack merges a new status update in the track
 func UpdateTrack(track []Status, update Status) {
+	defer Track_execution_time(Start_execution_time("UpdateTrack"))
+
+	lockTime := time.Now()
+	lock.Lock()
+	defer lock.Unlock()
+	plog.Printf("INFO: ======= Waited at UpdateTrack lock for %d ms =======", time.Since(lockTime).Seconds()*1000)
+
 	plog.Printf("INFO: Updating track from status update with latency %f ms", time.Since(update.MsgTimestamp).Seconds()*1000)
 	if update.CarNo == 0 {
 		track[0].MergeStatusUpdate(update)
@@ -68,7 +79,7 @@ func UpdateTrack(track []Status, update Status) {
 }
 
 // CreateChannels Set-up of Communication (hiding all Kafka details behind Go Channels)
-func CreateChannels(uc string) (chan Command, chan Status, error) {
+func CreateChannels(uc string, mux* goji.Mux, track* []Status) (chan Command, chan Status, error) {
 	// Set-up Kafka
 	kafkaServer := os.Getenv("KAFKA_SERVER")
 	if kafkaServer == "" {
@@ -81,7 +92,7 @@ func CreateChannels(uc string) (chan Command, chan Status, error) {
 
 	// Consumer
 	statusCh := make(chan Status)
-	err := CreateHttpConsumer(statusCh)
+	err := CreateHttpConsumer(statusCh, mux, track)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -109,6 +120,9 @@ func sendCommand(ch chan Command) {
 		if err != nil {
 			plog.Println("WARNING: Could not send command")
 		}
-		defer response.Body.Close()
+
+		if response != nil {
+			defer response.Body.Close()
+		}
 	}
 }

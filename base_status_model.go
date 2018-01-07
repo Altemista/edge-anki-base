@@ -61,6 +61,8 @@ func (s Status) Identify() string {
 
 // MergeStatusUpdate updates fields as per message type 2
 func (s *Status) MergeStatusUpdate(u Status) {
+	defer Track_execution_time(Start_execution_time("MergeStatusUpdate"))
+
 	if u.MsgID == 23 {
 		// No update, just a ping
 	} else if u.MsgID == 25 {
