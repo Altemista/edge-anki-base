@@ -83,24 +83,10 @@ func (s *Status) MergeStatusUpdate(u Status) {
 		s.PosTimestamp = u.MsgTimestamp
 		s.MsgTimestamp = u.MsgTimestamp
 		s.MaxTileNo = u.MaxTileNo
+		s.TransitionTimestamp = u.MsgTimestamp
+		s.findTileNo(u)
 	} else if u.MsgID == 41 {
 		// Transition update
-		/*s.LaneOffset = u.LaneOffset
-		s.LaneNo = u.LaneNo
-		s.LaneLength = u.LaneLength
-		/*
-				s.PosTileType = u.PosTileType
-				s.PosTileNo = u.PosTileNo
-				s.PosLocation = u.PosLocation
-				s.PosOptions = u.PosOptions
-				s.PosTimestamp = u.MsgTimestamp
-			s.findTileNo(u)
-		*/
-		/*s.LaneTimestamp = u.MsgTimestamp
-		s.MsgTimestamp = u.MsgTimestamp
-		s.TransitionTimestamp = u.MsgTimestamp
-		s.MaxTileNo = u.MaxTileNo*/
-
 		s.CarSpeed = u.CarSpeed
 		s.LaneOffset = u.LaneOffset
 		s.LaneNo = u.LaneNo

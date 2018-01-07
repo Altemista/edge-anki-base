@@ -23,7 +23,13 @@ import (
 	"net/http"
 	"encoding/json"
 	"io/ioutil"
+	"github.com/gorilla/websocket"
 )
+
+var upgrader = websocket.Upgrader{
+	ReadBufferSize: 1024,
+	WriteBufferSize: 1024,
+}
 
 var m_statusCh chan Status
 
@@ -32,8 +38,10 @@ func CreateHttpConsumer(statusCh chan Status) (error) {
 
 	m_statusCh = statusCh
 
-	http.HandleFunc("/status", http_status_handler)
-	go http.ListenAndServe(":8089", nil)
+	//http.HandleFunc("/status", http_status_handler)
+	//go http.ListenAndServe(":8089", nil)
+
+	http.HandleFunc("/status", websocket_handler)
 
 	return nil
 }
@@ -51,4 +59,30 @@ func http_status_handler(w http.ResponseWriter, req *http.Request) {
 		plog.Printf("WARNING: Could not unmarshal message, ignoring: %s", body)
 	}
 	m_statusCh <- update
+}
+
+func websocket_handler(w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		plog.Println(err)
+		return
+	}
+	plog.Println("Client subscribed")
+
+	for {
+		_, msg, err := conn.ReadMessage()
+		if err != nil {
+			plog.Println(err)
+			return
+		}
+
+		plog.Println("INFO: Received message: " + string(msg))
+		update := Status{}
+		err = json.Unmarshal(msg, &update)
+		if err != nil {
+			plog.Printf("WARNING: Could not unmarshal message, ignoring: %s", msg)
+		}
+		m_statusCh <- update
+	}
+	plog.Println("Client unsubscribed")
 }
