@@ -27,6 +27,7 @@ import (
 	"goji.io"
 	"goji.io/pat"
 	"time"
+	"github.com/pquerna/ffjson/ffjson"
 )
 
 var upgrader = websocket.Upgrader{
@@ -57,7 +58,7 @@ func http_status_handler(w http.ResponseWriter, req *http.Request) {
 	plog.Println("INFO: Received message: " + string(body))
 
 	update := Status{}
-	err = json.Unmarshal(body, &update)
+	err = ffjson.Unmarshal(body, &update)
 	if err != nil {
 		plog.Printf("WARNING: Could not unmarshal message, ignoring: %s", body)
 	}
@@ -82,7 +83,7 @@ func websocket_handler(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		plog.Println("INFO: Received message: " + string(msg))
 		update := Status{}
-		err = json.Unmarshal(msg, &update)
+		err = ffjson.Unmarshal(msg, &update)
 		if err != nil {
 			plog.Printf("WARNING: Could not unmarshal message, ignoring: %s", msg)
 		}
