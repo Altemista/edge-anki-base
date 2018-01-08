@@ -35,7 +35,7 @@ type (
 		CarSpeed            int         `json:"carSpeed"`
 		CarVersion          int         `json:"carVersion"`
 		CarBatteryLevel     int         `json:"carBatteryLevel"`
-		LaneOffset          float32     `json:"laneOffset"`
+		LaneOffset          int     	`json:"laneOffset"`
 		LaneNo              int         `json:"laneNo"`
 		LaneLength          int         `json:"laneLength"`
 		LaneTimestamp       time.Time   `json:"laneTimestamp"`
@@ -85,7 +85,6 @@ func (s *Status) MergeStatusUpdate(u Status) {
 		s.PosTimestamp = u.MsgTimestamp
 		s.MsgTimestamp = u.MsgTimestamp
 		s.MaxTileNo = u.MaxTileNo
-		s.TransitionTimestamp = u.MsgTimestamp
 		s.findTileNo(u)
 	} else if u.MsgID == 41 {
 		// Transition update

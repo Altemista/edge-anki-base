@@ -58,7 +58,7 @@ func http_status_handler(w http.ResponseWriter, req *http.Request) {
 	plog.Println("INFO: Received message: " + string(body))
 
 	update := Status{}
-	err = ffjson.Unmarshal(body, &update)
+	err = json.Unmarshal(body, &update)
 	if err != nil {
 		plog.Printf("WARNING: Could not unmarshal message, ignoring: %s", body)
 	}
