@@ -22,6 +22,8 @@ package anki
 import (
 	"fmt"
 	"time"
+	"strings"
+	"strconv"
 )
 
 type (
@@ -124,4 +126,71 @@ func (s *Status) findTileNo(u Status) {
 		}
 	}
 	s.PosTileNo = bestTileNo
+}
+
+func parseCSV(csv string) (Status, error) {
+	defer Track_execution_time(Start_execution_time("parseCSV"))
+
+	status := Status{}
+	var err error
+
+	splits := strings.Split(csv, ";")
+	status.MsgID, err = strconv.Atoi(splits[0])
+	if err != nil {
+		return status, err
+	}
+
+	status.MsgTimestamp, err = time.Parse(time.RFC3339, splits[1])
+	if err != nil {
+		return status, err
+	}
+
+	status.CarNo, err = strconv.Atoi(splits[2])
+	if err != nil {
+		return status, err
+	}
+
+	status.PosLocation, err = strconv.Atoi(splits[3])
+	if err != nil {
+		return status, err
+	}
+
+	status.PosTileNo, err = strconv.Atoi(splits[4])
+	if err != nil {
+		return status, err
+	}
+
+	status.CarSpeed, err = strconv.Atoi(splits[5])
+	if err != nil {
+		return status, err
+	}
+
+	status.LaneNo, err = strconv.Atoi(splits[6])
+	status.LaneLength, err = strconv.Atoi(splits[7])
+	status.MaxTileNo, err = strconv.Atoi(splits[8])
+
+	posOpts := strings.Split(splits[9], ":")
+
+	for _, posOptString := range posOpts {
+		posOptSplit := strings.Split(posOptString, ",")
+		if(len(posOptSplit) < 2) {
+			continue
+		}
+
+		posOpt := PosOption{ }
+
+		posOpt.OptProbability, err = strconv.Atoi(posOptSplit[0])
+		if err != nil {
+			continue
+		}
+
+		posOpt.OptTileNo, err = strconv.Atoi(posOptSplit[1])
+		if err != nil {
+			continue
+		}
+
+		status.PosOptions = append(status.PosOptions, posOpt)
+	}
+
+	return status, err
 }
