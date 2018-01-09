@@ -1,4 +1,4 @@
-// +build performance
+// +build !performance
 
 package anki
 
