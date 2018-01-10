@@ -33,7 +33,7 @@ import (
 var lock sync.Mutex
 
 // Variable plog is the logger for the package
-var plog = log.New(os.Stdout, "EDGE-ANKI-BASE: ", log.Lshortfile|log.LstdFlags)
+var plog = log.New(os.Stdout, "EDGE-ANKI-BASE: ", log.Lshortfile|log.LstdFlags|log.Lmicroseconds)
 
 // SetLogger sets-up the
 func SetLogger(l *log.Logger) {
