@@ -59,7 +59,7 @@ func UpdateTrack(track []Status, update Status) {
 	lockTime := time.Now()
 	lock.Lock()
 	defer lock.Unlock()
-	plog.Printf("INFO: ======= Waited at UpdateTrack lock for %d ms =======", time.Since(lockTime).Seconds()*1000)
+	plog.Printf("INFO: ======= Waited at UpdateTrack lock for %f ms =======", time.Since(lockTime).Seconds()*1000)
 
 	plog.Printf("INFO: Updating track from status update with latency %f ms", time.Since(update.MsgTimestamp).Seconds()*1000)
 	if update.CarNo == 0 {
