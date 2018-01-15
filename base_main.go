@@ -28,6 +28,7 @@ import (
 	"bytes"
 	"goji.io"
 	"sync"
+	"github.com/Shopify/sarama"
 )
 
 var lock sync.Mutex
@@ -79,7 +80,7 @@ func UpdateTrack(track []Status, update Status) {
 }
 
 // CreateChannels Set-up of Communication (hiding all Kafka details behind Go Channels)
-func CreateChannels(uc string, mux* goji.Mux, track* []Status) (chan Command, chan Status, error) {
+func CreateChannels(uc string) (chan Command, chan Status, error) {
 	// Set-up Kafka
 	kafkaServer := os.Getenv("KAFKA_SERVER")
 	if kafkaServer == "" {
@@ -87,8 +88,48 @@ func CreateChannels(uc string, mux* goji.Mux, track* []Status) (chan Command, ch
 		kafkaServer = "127.0.0.1"
 	}
 	// Producer
+	p, err := CreateKafkaProducer(kafkaServer + ":9092")
+	if err != nil {
+		return nil, nil, err
+	}
 	cmdCh := make(chan Command)
-	go sendCommand(cmdCh)
+	go sendCommand(p, cmdCh)
+	// Consumer
+	statusCh := make(chan Status)
+	_, err = CreateKafkaConsumer(kafkaServer+":2181", uc, statusCh)
+	if err != nil {
+		return nil, nil, err
+	}
+	return cmdCh, statusCh, nil
+}
+
+func sendCommand(p sarama.AsyncProducer, ch chan Command) {
+	var cmd Command
+	for {
+		plog.Printf("INFO: Waiting for command at %v", time.Now())
+		cmd = <-ch
+		plog.Printf("INFO: Received command")
+		cmdstr, err := cmd.ControllerString()
+		if err != nil {
+			plog.Println("WARNING: Ignoring command due to decoding error")
+			continue
+		}
+		p.Input() <- &sarama.ProducerMessage{
+			Value:     sarama.StringEncoder(cmdstr),
+			Topic:     "Command" + strconv.Itoa(cmd.CarNo),
+			Partition: 0,
+			Timestamp: time.Now(),
+		}
+
+	}
+}
+
+
+// CreateChannels Set-up of Communication (hiding all Kafka details behind Go Channels)
+func CreateHttpChannels(uc string, mux* goji.Mux, track* []Status) (chan Command, chan Status, error) {
+	// Producer
+	cmdCh := make(chan Command)
+	go sendHttpCommand(cmdCh)
 
 	// Consumer
 	statusCh := make(chan Status)
@@ -99,7 +140,7 @@ func CreateChannels(uc string, mux* goji.Mux, track* []Status) (chan Command, ch
 	return cmdCh, statusCh, nil
 }
 
-func sendCommand(ch chan Command) {
+func sendHttpCommand(ch chan Command) {
 	var cmd Command
 	for {
 		plog.Printf("INFO: Waiting for command at %v", time.Now())
