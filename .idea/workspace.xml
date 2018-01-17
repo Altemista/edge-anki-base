@@ -14,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="base_main.go" pinned="false" current-in-tab="true">
+      <file leaf-file-name="base_main.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/base_main.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-32">
-              <caret line="61" column="64" lean-forward="false" selection-start-line="61" selection-start-column="64" selection-end-line="61" selection-end-column="64" />
+            <state relative-caret-position="646">
+              <caret line="155" column="8" lean-forward="false" selection-start-line="155" selection-start-column="8" selection-end-line="155" selection-end-column="8" />
               <folding>
                 <element signature="e#1109#1220#0" expanded="true" />
               </folding>
@@ -26,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="base_http_consumer.go" pinned="false" current-in-tab="false">
+      <file leaf-file-name="base_http_consumer.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/base_http_consumer.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="383">
-              <caret line="61" column="50" lean-forward="false" selection-start-line="61" selection-start-column="50" selection-end-line="61" selection-end-column="50" />
+              <caret line="61" column="53" lean-forward="false" selection-start-line="61" selection-start-column="53" selection-end-line="61" selection-end-column="53" />
               <folding>
                 <element signature="e#1109#1227#0" expanded="true" />
               </folding>
@@ -41,7 +41,7 @@
       <file leaf-file-name="base_status_model.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/base_status_model.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1504">
+            <state relative-caret-position="2865">
               <caret line="196" column="0" lean-forward="false" selection-start-line="196" selection-start-column="0" selection-end-line="196" selection-end-column="0" />
               <folding>
                 <element signature="e#1109#1156#0" expanded="true" />
@@ -87,7 +87,7 @@
       <file leaf-file-name="base_command_model.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/base_command_model.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
+            <state relative-caret-position="585">
               <caret line="42" column="33" lean-forward="false" selection-start-line="42" selection-start-column="18" selection-end-line="42" selection-end-column="33" />
               <folding />
             </state>
@@ -107,7 +107,7 @@
       <file leaf-file-name="base_kafka_consumer.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/base_kafka_consumer.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9">
+            <state relative-caret-position="330">
               <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
               <folding>
                 <element signature="e#1109#1238#0" expanded="true" />
@@ -148,12 +148,12 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/base_kafka_consumer.go" />
-        <option value="$PROJECT_DIR$/base_http_consumer.go" />
         <option value="$PROJECT_DIR$/base_status_model.go" />
         <option value="$PROJECT_DIR$/base_status_model_test.go" />
         <option value="$PROJECT_DIR$/performance_measure.go" />
         <option value="$PROJECT_DIR$/performance_measure_off.go" />
         <option value="$PROJECT_DIR$/base_main.go" />
+        <option value="$PROJECT_DIR$/base_http_consumer.go" />
       </list>
     </option>
   </component>
@@ -189,10 +189,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="AndroidView" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -204,6 +203,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -364,11 +364,13 @@
       <workItem from="1515530942261" duration="221000" />
       <workItem from="1515574460990" duration="29000" />
       <workItem from="1516037118606" duration="1366000" />
+      <workItem from="1516123551781" duration="529000" />
+      <workItem from="1516148312126" duration="856000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31026000" />
+    <option name="totallyTimeSpent" value="32411000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -780,6 +782,16 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/base_status_model_ffjson.go" />
+    <entry file="file://$PROJECT_DIR$/base_status_model.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2865">
+          <caret line="196" column="0" lean-forward="false" selection-start-line="196" selection-start-column="0" selection-end-line="196" selection-end-column="0" />
+          <folding>
+            <element signature="e#1109#1156#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/performance_measure.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -800,11 +812,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/base_kafka_producer.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="29" column="5" lean-forward="false" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_command_model.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="42" column="33" lean-forward="false" selection-start-line="42" selection-start-column="18" selection-end-line="42" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/base_command_model_test.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
           <caret line="31" column="21" lean-forward="false" selection-start-line="31" selection-start-column="21" selection-end-line="31" selection-end-column="21" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base_kafka_consumer.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <folding>
+            <element signature="e#1109#1238#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -816,20 +854,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/base_kafka_producer.go">
+    <entry file="file://$PROJECT_DIR$/base_main.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="29" column="5" lean-forward="false" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/base_kafka_consumer.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9">
-          <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+        <state relative-caret-position="646">
+          <caret line="155" column="8" lean-forward="false" selection-start-line="155" selection-start-column="8" selection-end-line="155" selection-end-column="8" />
           <folding>
-            <element signature="e#1109#1238#0" expanded="true" />
+            <element signature="e#1109#1220#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -837,37 +867,9 @@
     <entry file="file://$PROJECT_DIR$/base_http_consumer.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="383">
-          <caret line="61" column="50" lean-forward="false" selection-start-line="61" selection-start-column="50" selection-end-line="61" selection-end-column="50" />
+          <caret line="61" column="53" lean-forward="false" selection-start-line="61" selection-start-column="53" selection-end-line="61" selection-end-column="53" />
           <folding>
             <element signature="e#1109#1227#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/base_command_model.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="42" column="33" lean-forward="false" selection-start-line="42" selection-start-column="18" selection-end-line="42" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/base_status_model.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1504">
-          <caret line="196" column="0" lean-forward="false" selection-start-line="196" selection-start-column="0" selection-end-line="196" selection-end-column="0" />
-          <folding>
-            <element signature="e#1109#1156#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/base_main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-32">
-          <caret line="61" column="64" lean-forward="false" selection-start-line="61" selection-start-column="64" selection-end-line="61" selection-end-column="64" />
-          <folding>
-            <element signature="e#1109#1220#0" expanded="true" />
           </folding>
         </state>
       </provider>

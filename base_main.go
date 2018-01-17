@@ -153,7 +153,13 @@ func sendHttpCommand(ch chan Command) {
 			continue
 		}
 
-		requestUrl := "http://localhost:809" + strconv.Itoa(cmd.CarNo) + "/cmd"
+		carServer := os.Getenv("CAR_HTTP_SERVER")
+		if carServer == "" {
+			plog.Printf("INFO: Using localhsot as default CAR_HTTP_SERVER.")
+			carServer = "localhost"
+		}
+
+		requestUrl := "http://" + carServer + ":809" + strconv.Itoa(cmd.CarNo) + "/cmd"
 		var netClient = &http.Client{
 			Timeout: time.Second * 10,
 		}
