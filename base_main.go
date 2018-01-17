@@ -155,7 +155,7 @@ func sendHttpCommand(ch chan Command) {
 
 		carServer := os.Getenv("CAR_HTTP_SERVER")
 		if carServer == "" {
-			plog.Printf("INFO: Using localhsot as default CAR_HTTP_SERVER.")
+			plog.Printf("INFO: Using localhost as default CAR_HTTP_SERVER.")
 			carServer = "localhost"
 		}
 
