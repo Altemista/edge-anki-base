@@ -35,6 +35,7 @@ func CreateKafkaConsumer(zookeeperConn string, consumerGroup string, statusCh ch
 	config := consumergroup.NewConfig()
 	config.Offsets.Initial = sarama.OffsetOldest
 	config.Offsets.ProcessingTimeout = 10 * time.Second
+	config.Metadata.Retry.Max = 100
 
 	consumer, err := consumergroup.JoinConsumerGroup(consumerGroup, []string{"Status"}, []string{zookeeperConn}, config)
 	if err != nil {

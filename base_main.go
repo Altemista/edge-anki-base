@@ -147,19 +147,22 @@ func sendHttpCommand(ch chan Command) {
 		cmd = <-ch
 		plog.Printf("INFO: Received command")
 		cmdstr, err := cmd.ControllerString()
-		plog.Printf("INFO: Sending command %s to topic %s", cmdstr, "Command" + strconv.Itoa(cmd.CarNo))
-		if err != nil {
-			plog.Println("WARNING: Ignoring command due to decoding error")
-			continue
-		}
 
 		carServer := os.Getenv("CAR_HTTP_SERVER")
 		if carServer == "" {
 			plog.Printf("INFO: Using localhost as default CAR_HTTP_SERVER.")
 			carServer = "localhost"
+		} else {
+			plog.Printf("INFO: Using " + carServer + " as CAR_HTTP_SERVER.")
+		}
+		requestUrl := "http://" + carServer + ":809" + strconv.Itoa(cmd.CarNo) + "/cmd"
+
+		plog.Printf("INFO: Sending command %s to address %s", cmdstr, "Command" + requestUrl)
+		if err != nil {
+			plog.Println("WARNING: Ignoring command due to decoding error")
+			continue
 		}
 
-		requestUrl := "http://" + carServer + ":809" + strconv.Itoa(cmd.CarNo) + "/cmd"
 		var netClient = &http.Client{
 			Timeout: time.Second * 10,
 		}
