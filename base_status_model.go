@@ -77,6 +77,7 @@ func (s *Status) MergeStatusUpdate(u Status) {
 		s.MsgTimestamp = u.MsgTimestamp
 	} else if u.MsgID == 39 {
 		// Position update
+		s.CarID = u.CarID
 		s.CarSpeed = u.CarSpeed
 		s.LaneOffset = u.LaneOffset
 		s.LaneNo = u.LaneNo
