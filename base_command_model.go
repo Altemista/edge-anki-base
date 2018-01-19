@@ -85,6 +85,8 @@ func (c *Command) ControllerString() (string, error) {
 		return "lp", nil
 	} else if c.Command == "bat" {
 		return "bat", nil
+	} else if c.Command == "swap" {
+		return "swap " +  c.Param1, nil
 	}
 	return "", errors.New("Unknown Anki Overdrive controller command")
 }
