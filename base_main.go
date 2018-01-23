@@ -133,9 +133,16 @@ func CreateHttpChannels(uc string, mux* goji.Mux, track* []Status) (chan Command
 
 	// Consumer
 	statusCh := make(chan Status)
-	err := CreateHttpConsumer(statusCh, mux, track)
-	if err != nil {
-		return nil, nil, err
+	if uc == "anki.adas" {
+		err := CreateAdasHttpConsumer(statusCh, mux, track)
+		if err != nil {
+			return nil, nil, err
+		}
+	} else {
+		err := CreateHttpConsumer(statusCh, mux, track)
+		if err != nil {
+			return nil, nil, err
+		}
 	}
 	return cmdCh, statusCh, nil
 }

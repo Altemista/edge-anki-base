@@ -49,6 +49,18 @@ func CreateHttpConsumer(statusCh chan Status, mux* goji.Mux, track* []Status) (e
 	return nil
 }
 
+func CreateAdasHttpConsumer(statusCh chan Status, mux* goji.Mux, track* []Status) (error) {
+	plog.Println("Starting http listener")
+
+	m_statusCh = statusCh
+	m_track = track
+
+	//http.HandleFunc("/status", websocket_handler)
+	mux.HandleFunc(pat.Get("/status"), websocket_adas_handler)
+
+	return nil
+}
+
 func http_status_handler(w http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
@@ -65,6 +77,35 @@ func http_status_handler(w http.ResponseWriter, req *http.Request) {
 }
 
 func websocket_handler(w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		plog.Println(err)
+		return
+	}
+	plog.Println("Client subscribed")
+
+	for {
+		_, msg, err := conn.ReadMessage()
+		if err != nil {
+			plog.Println(err)
+			return
+		}
+
+		start := time.Now()
+		plog.Println("INFO: Received message")
+
+		update := Status{}
+		err = json.Unmarshal(msg, &update)
+		if err != nil {
+			plog.Printf("WARNING: Could not unmarshal message, ignoring: %s", string(msg))
+		}
+		plog.Printf("INFO: Unmarshalling message took %f ms", time.Since(start).Seconds()*1000)
+		m_statusCh <- update
+	}
+	plog.Println("Client unsubscribed")
+}
+
+func websocket_adas_handler(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		plog.Println(err)
