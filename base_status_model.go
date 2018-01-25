@@ -48,6 +48,7 @@ type (
 		PosOptions          []PosOption `json:"posOptions"`
 		MaxTileNo           int         `json:"maxTileNo"`
 		TransitionTimestamp time.Time
+		LightsOn			bool
 	}
 	// PosOption lists an option for a position
 	PosOption struct {
